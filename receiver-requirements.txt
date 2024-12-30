@@ -1,0 +1,5 @@
+numpy
+pyaudio
+matplotlib
+gpsd-py3
+folium
