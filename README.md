@@ -1,6 +1,6 @@
-# TDOA Proof-of-Concept
+# Raspberry Pi Audio Geolocation
 
-This repository demonstrates a proof-of-concept for using Raspberry Pi based receivers to perform Time Difference of Arrival (TDOA) calculations on audio signals. The project leverages Raspberry Pi devices, GPS modules, and simple omnidirectional microphones for geolocation based on audio signal timing. Vaguely inspired by Ukraine's SkyFortress system, I wanted to see how easy it might be to implement the skeletal - but ultimately extendable -  workings of a cheap audio geolocation system using Raspberry Pi. This projects offers a workable system for detecting pulses of audio at a given frequency.
+This repository demonstrates a proof-of-concept for using Raspberry Pi based receivers to perform Time Difference of Arrival (TDOA) calculations on audio signals to geolocate the emitter. Vaguely inspired by Ukraine's SkyFortress system, I wanted to see how easy it might be to implement the skeletal - but ultimately extendable -  workings of a cheap audio geolocation system using Raspberry Pi. This projects offers a workable system for geolocating pulses of audio using Raspberry Pi receivers utilising cheap GPS modules and simple omnidirectional microphones. 
 
 ---
 
@@ -10,9 +10,9 @@ This repository demonstrates a proof-of-concept for using Raspberry Pi based rec
 2. [Hardware Description](#hardware-description)
 3. [Setup Guide](#setup-guide)
    - [Receiver Setup](#receiver-setup)
-   - [Server Setup](#central-setup)
+   - [Server Setup](#server-setup)
 4. [Running the Project](#running-the-project)
-5. [Core Functionality](#core-functionality)
+   - [Step-by-Step](#step-by-step)
    - [TDOA Calculation](#tdoa-calculation)
    - [Visualization](#visualization)
 6. [Future Work](#future-work)
@@ -21,7 +21,9 @@ This repository demonstrates a proof-of-concept for using Raspberry Pi based rec
 
 ## Introduction
 
-Time Difference of Arrival (TDOA) is a technique used to locate a signal source by analyzing the time delay of the signal reaching multiple receivers. This project demonstrates how inexpensive hardware and Python can implement this geolocation technique for pulses of audio signals. For more complex detection problems, streaming of audio data would be necessary. 
+Time Difference of Arrival (TDOA) is a technique used to locate a signal source by analyzing the time delay of the signal reaching multiple receivers. This project demonstrates how inexpensive hardware and Python can implement this geolocation technique for pulses of audio signals. 
+
+> For more complex detection problems, additional receivers and streaming of audio data would be necessary. The former would be an easy alteration to this code base, the latter more complex. 
 
 ---
 
@@ -29,7 +31,7 @@ Time Difference of Arrival (TDOA) is a technique used to locate a signal source 
 
 At its most simple, this project requires two receivers to detect and process audio signals, a server to process their outputs, and some form of generating a consistent audio signal. It may also be necessary to add in a WiFi AP to create a LAN if you are out of domestic WiFi range (I used a Pi Zero with a USB WiFi adaptor). 
 
-### Receiver Nodes
+### Receivers
 
 - **Raspberry Pi**: Each receiver uses a Raspberry Pi to collect and process data.
 - **GPS Module**: Provides precise timing information via PPS (Pulse Per Second) signals.
@@ -48,7 +50,7 @@ At its most simple, this project requires two receivers to detect and process au
 
 This section explains the hardware and software setup required to replicate the project.
 
-### Receiver Node Setup
+### Receiver Setup
 
 #### Configure SSH and VNC on the Raspberry Pi
 
@@ -62,7 +64,7 @@ This section explains the hardware and software setup required to replicate the 
 
 #### GPS and PPS Setup
 
-The use of GPS in this project is pretty self-explanatory, but 'PPS' might not be so obvious. Pulse Per Second is a highly accurate timing signal service provided by GPS, which facilitates extremely accurate timing and synchronization between devices. In our case the receivers. This synchronization is central to TDOA. There are alternatives, but using PPS saves a lot of hassle.
+The use of GPS in this project is pretty self-explanatory, but 'PPS' might not be so obvious. 'Pulse Per Second' is a highly accurate timing signal service provided by GPS, which facilitates extremely accurate timing and synchronization between devices. In our case the receivers. This synchronization is central to TDOA. There are alternatives, but using PPS saves a lot of hassle.
 
 ##### Wiring the GPS Module
 
@@ -133,7 +135,7 @@ GPSD is the GPS Daemon we will be using, and Chrony is the timing software. If e
 
 #### Python Environment
 
-Now the hardware is configured, we need to get the processing software setup. I've used Python in this example, calling PyAudio to perform the fourier transform and signal detection. 
+Now the hardware is configured, we need to get the processing software setup. I've used Python in this example, utilising PyAudio to perform the fourier transform and signal detection. 
 
 1. Install PyAudio dependencies:
    ```bash
@@ -151,7 +153,7 @@ Now the hardware is configured, we need to get the processing software setup. I'
 
 ### Server Setup
 
-The server processes information from the receiver nodes and generates visualizations of the TDOA hyperbolas. Follow these steps to set it up:
+The server processes information from the receiver nodes and generates visualizations of the TDOA hyperbolas. Follow these steps to set it up.
 
 #### Configure the Laptop for VNC Access
 
@@ -160,10 +162,6 @@ The server processes information from the receiver nodes and generates visualiza
 #### Python Environment
 
 1. Clone the repository and navigate to the directory.
-   ```bash
-   git clone https://github.com/example/tdoa-poc.git
-   cd tdoa-poc
-   ```
 2. Create a virtual environment:
    ```bash
    python3 -m venv tdoa_server
@@ -182,6 +180,8 @@ The server processes information from the receiver nodes and generates visualiza
 
 ## Running the Project
 
+## Step-by-Step
+
 1. **Set Up the Receivers**
    - VNC into each Raspberry Pi and set the `main.py` script running.
 2. **Start the Central Node**
@@ -192,7 +192,9 @@ The server processes information from the receiver nodes and generates visualiza
    
 ### TDOA Calculation
 
-The Python script `tdoa_server.py` implements the core TDOA calculations. It computes the hyperbolic curve satisfying the time difference constraints between two receivers. The script also validates the input parameters to ensure realistic results.
+The Python script `tdoa_server.py` implements the core TDOA calculations. At its most simple, this works by producing a curve between the receivers where if every point on this curve was the source of an emission *the time difference of arrival of this signal between the receivers would be constant*. For a slightly more technical understanding, please see this [section](https://en.wikipedia.org/wiki/Hyperbola#Definitions) of a relevant wikipedia article. If you swap *a* here for the time difference derived distance between the receivers instead of the physical distance, you will get the concept. 
+
+> This script performs some basic checks to ensure the hyperbolic curve is valid before plotting. 
 
 #### Key Parameters
 
@@ -202,7 +204,7 @@ The Python script `tdoa_server.py` implements the core TDOA calculations. It com
 
 ### Visualization
 
-The project uses the Folium library to visualize TDOA hyperbolas and receiver locations on an interactive map.
+The project uses the Folium library to visualize TDOA hyperbolas and receiver locations on an interactive map. As there are only two receivers at present, there is only one curve. In all instances I tested, the emitter rests upon the curves generated. 
 
 #### Example Output
 
@@ -213,11 +215,8 @@ The project uses the Folium library to visualize TDOA hyperbolas and receiver lo
 
 ## Future Work
 
-- Add support for more receivers to refine source localization.
+- Add support for more receivers to enable true geolocation.
 - Transition to real-time TDOA analysis using streaming data.
 
 ---
-
-
-
 
