@@ -1,6 +1,6 @@
 # Raspberry Pi Audio Geolocation
 
-This repository demonstrates a proof-of-concept for using Raspberry Pi based receivers to perform Time Difference of Arrival (TDOA) calculations on audio signals to geolocate the emitter. Vaguely inspired by Ukraine's SkyFortress system, I wanted to see how easy it might be to implement the skeletal - but ultimately extendable -  workings of a cheap audio geolocation system using Raspberry Pi. This projects offers a workable system for geolocating pulses of audio using Raspberry Pi receivers utilising cheap GPS modules and simple omnidirectional microphones. 
+This repository demonstrates a proof-of-concept for using Raspberry Pi based receivers to perform Time Difference of Arrival (TDOA) calculations on audio signals to geolocate the emitter. Vaguely inspired by Ukraine's SkyFortress system, I wanted to see how easy it might be to implement the skeletal - but ultimately extendable -  workings of a cheap audio geolocation system using Raspberry Pi. This project offers the outline of a workable system for geolocating pulses of audio using Raspberry Pi receivers utilising cheap GPS modules and simple omnidirectional microphones. 
 
 ---
 
@@ -55,7 +55,7 @@ This section explains the hardware and software setup required to replicate the 
 #### Configure SSH and VNC on the Raspberry Pi
 
 1. Use the Raspberry Pi Imager to configure networking and enable SSH before burning the OS onto the SD card. I used Bullseye, as I have repeated issues with version clashes in the newest release. 
-2. Assign unique hostnames to each Raspberry Pi to simplify network management.
+2. Assign unique hostnames to each Raspberry Pi to simplify network management. **Make sure the server code is updated to reflect these.**
 3. Start up your Pi.
 4. SSH into the Raspberry Pi once it's on the network.
 5. Access configuration settings via `sudo raspi-config` and enable VNC:
