@@ -135,7 +135,7 @@ GPSD is the GPS Daemon we will be using, and Chrony is the timing software. If e
    sudo systemctl restart chrony
    ```
 6. Verify configuration:
-   - Run `gpsd` to confirm GPS data is received.
+   - Run `cgps` to confirm GPS data is received.
    - Run `chronyc sources` to check PPS synchronization.
 
 #### Python Environment
@@ -153,6 +153,7 @@ Now the hardware is configured, we need to get the processing software setup. I'
    cd Raspi_Audio_Geolocation
    pip install -r receiver-requirements.txt
    ```
+4. Run and test the `main.py` code to check everything is working.
 
 ### Server Setup
 
