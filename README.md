@@ -5,7 +5,7 @@ This repository demonstrates a proof-of-concept for using Raspberry Pi based rec
 ---
 
 ![Map Example](images/map_example.jpg)
-*Figure 1: Hyperbolic curve for three receivers.*
+*Figure 1: Hyperbolic curves for three receivers.*
 
 
 ## Table of Contents
