@@ -116,7 +116,7 @@ GPSD is the GPS Daemon we will be using, and Chrony is the timing software. If e
    sudo systemctl stop serial-getty@ttyS0.service
    sudo systemctl disable serial-getty@ttyS0.service
    ```
-3. Remove `console-serial0` references from `/boot/cmdline.txt`.
+3. Remove `console=serial0` references from `/boot/cmdline.txt`.
 4. Configure Chrony:
    ```bash
    sudo nano /etc/chrony/chrony.conf
