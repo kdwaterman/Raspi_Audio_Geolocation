@@ -58,8 +58,9 @@ This section explains the hardware and software setup required to replicate the 
 2. Assign unique hostnames to each Raspberry Pi to simplify network management. **Make sure the server code is updated to reflect these.**
 3. Start up your Pi.
 4. SSH into the Raspberry Pi once it's on the network.
-5. Access configuration settings via `sudo raspi-config` and enable VNC:
-   - **Display Options** → **Set VNC resolution** → **Interface Options** → **Enable VNC**
+5. Access configuration settings via `sudo raspi-config`, then enable VNC and set the resolution:
+   - **Interface Options** → **Enable VNC**
+   - **Display Options** → **Set VNC resolution**
    - Finish and reboot.
 
 #### GPS and PPS Setup
