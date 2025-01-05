@@ -25,7 +25,7 @@ This repository demonstrates a proof-of-concept for using Raspberry Pi based rec
 
 ## Introduction
 
-Time Difference of Arrival (TDOA) is a technique used to locate a signal source by analyzing the time delay of the signal reaching multiple receivers. This project demonstrates how inexpensive hardware and Python can implement this geolocation technique for pulses of audio signals. 
+Time Difference of Arrival (TDOA) is a technique used to locate a signal source by analyzing the time delay of the signal reaching multiple receivers. This project demonstrates how inexpensive hardware can be used to implement this geolocation technique for the detection and localisation of pulsed audio signals. 
 
 > For more complex detection problems, additional receivers and streaming of audio data may be necessary. The former would be an easy alteration to this code base, the latter more complex. 
 
