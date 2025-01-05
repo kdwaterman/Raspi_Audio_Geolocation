@@ -4,6 +4,10 @@ This repository demonstrates a proof-of-concept for using Raspberry Pi based rec
 
 ---
 
+![Map Example](images/map_example.jpg)
+*Figure 1: Hyperbolic curve for three receivers.*
+
+
 ## Table of Contents
 
 1. [Introduction](#introduction)
@@ -23,7 +27,7 @@ This repository demonstrates a proof-of-concept for using Raspberry Pi based rec
 
 Time Difference of Arrival (TDOA) is a technique used to locate a signal source by analyzing the time delay of the signal reaching multiple receivers. This project demonstrates how inexpensive hardware and Python can implement this geolocation technique for pulses of audio signals. 
 
-> For more complex detection problems, additional receivers and streaming of audio data would be necessary. The former would be an easy alteration to this code base, the latter more complex. 
+> For more complex detection problems, additional receivers and streaming of audio data may be necessary. The former would be an easy alteration to this code base, the latter more complex. 
 
 ---
 
@@ -38,7 +42,7 @@ At its most simple, this project requires two receivers to detect and process au
 - **Omnidirectional USB Microphone**: Captures audio signals for TDOA calculations.
 
 ![Reciever Example](images/reciever_example.jpg)
-*Figure 1: Hardware setup showing Raspberry Pi with GPS module and omnidirectional microphone.*
+*Figure 2: Hardware setup showing Raspberry Pi with GPS module and omnidirectional microphone.*
 
 ### Server
 
@@ -138,10 +142,7 @@ GPSD is the GPS Daemon we will be using, and Chrony is the timing software. If e
 
 Now the hardware is configured, we need to get the processing software setup. I've used Python in this example, utilising PyAudio to perform the fourier transform and signal detection. 
 
-1. Install PyAudio dependencies:
-   ```bash
-   sudo apt install libportaudio2 libportaudiocpp0 portaudio19-dev
-   ```
+1. Clone the repository to your Pi and navigate to the directory.
 2. Create a virtual environment:
    ```bash
    python3 -m venv tdoa_env
@@ -149,6 +150,7 @@ Now the hardware is configured, we need to get the processing software setup. I'
    ```
 3. Install the dependencies:
    ```bash
+   cd Raspi_Audio_Geolocation
    pip install -r receiver-requirements.txt
    ```
 
@@ -195,7 +197,7 @@ The server processes information from the receiver nodes and generates visualiza
 
 The Python script `tdoa_server.py` implements the core TDOA calculations. At its most simple, this works by producing a curve between the receivers where if every point on this curve was the source of an emission *the time difference of arrival of this signal between the receivers would be constant*. For a slightly more technical understanding, please see this [section](https://en.wikipedia.org/wiki/Hyperbola#Definitions) of a relevant wikipedia article. If you swap *a* here for the time difference derived distance between the receivers instead of the physical distance, you will get the concept. 
 
-> This script performs some basic checks to ensure the hyperbolic curve is valid before plotting. 
+> This script performs some basic checks to ensure the hyperbolic curve is valid before plotting. i.e. that the time distance is not larger than the physical distance.
 
 #### Key Parameters
 
@@ -205,19 +207,14 @@ The Python script `tdoa_server.py` implements the core TDOA calculations. At its
 
 ### Visualization
 
-The project uses the Folium library to visualize TDOA hyperbolas and receiver locations on an interactive map. As there are only two receivers at present, there is only one curve. In all instances I tested, the emitter rests upon the curves generated. 
-
-#### Example Output
-
-![Map Example](images/map_example.jpg)
-*Figure 2: Hyperbolic curve for two receivers.*
+The project uses the Folium library to visualize TDOA hyperbolas and receiver locations on an interactive map. 
 
 ---
 
 ## Future Work
 
-- Add support for more receivers to enable true geolocation.
-- Transition to real-time TDOA analysis using streaming data.
+- [x] Add support for more receivers to enable true geolocation.
+- [ ] Transition to real-time TDOA analysis using streaming data.
 
 ---
 

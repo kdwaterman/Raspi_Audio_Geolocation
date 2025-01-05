@@ -14,7 +14,7 @@ TARGET_FREQUENCY = 4000  # Frequency to detect (in Hz)
 AMPLITUDE_THRESHOLD = 5000  # Amplitude threshold for detection
 
 # Socket configuration
-SERVER_IP = '10.42.0.120'   #'192.168.0.7'  Replace with the IP address of the target device
+SERVER_IP = '10.42.0.120'   # Replace with the IP address of the target device
 SERVER_PORT = 65432  # Replace with the port number of the target device
 sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 
@@ -53,10 +53,6 @@ print("Listening for target frequency...")
 
 try:
     while True:
-        #print("here3")
-        #time.sleep(1)
-        # Start timing
-        #start_time = time.perf_counter_ns()
 
         # Read audio data from the stream
         data = stream.read(CHUNK_SIZE, exception_on_overflow=False)
@@ -72,17 +68,11 @@ try:
         # Find the index of the target frequency
         target_index = np.argmin(np.abs(freqs - TARGET_FREQUENCY))
 
-        # End timing
-        # end_time = time.perf_counter_ns()
-        # elapsed_time = (end_time - start_time) / 1e3  # Convert to microseconds
-        # print(f"Processing time: {elapsed_time:.2f} μs")
 
-        # # Check if the amplitude at the target frequency exceeds the threshold
+        # Check if the amplitude at the target frequency exceeds the threshold
         if magnitude[target_index] > AMPLITUDE_THRESHOLD:
         # Get the current timestamp with nanosecond accuracy
            timestamp_ns = time.time_ns()
-           #timestamp = datetime.datetime.fromtimestamp(timestamp_ns / 1e9).strftime('%Y-%m-%d %H:%M:%S.%f')
-           #print(f"Frequency detected at: {timestamp}")
 
         # Get the current GPS fix
            gps_stamp = get_gps_fix()
@@ -105,7 +95,7 @@ try:
            break
 
 except KeyboardInterrupt:
-    # Graceful exit on Ctrl+C
+    
     print("Interrupted by user.")
 
 finally:
@@ -114,3 +104,4 @@ finally:
     stream.close()
     audio.terminate()
     sock.close()
+
